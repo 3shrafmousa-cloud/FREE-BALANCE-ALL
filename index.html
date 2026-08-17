@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المنصة التعليمية للمحاسبة الإدارية</title>
+    <!-- خطوط احترافية -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* ===== ROOT ===== */
+        /* ============================================================
+           ROOT VARIABLES – الهوية البصرية الفاخرة
+           ============================================================ */
         :root {
             --black: #0c0a08;
             --black-2: #151210;
@@ -30,6 +34,10 @@
             --shadow-soft: 0 10px 40px -12px rgba(0, 0, 0, .6);
             --shadow-gold: 0 0 0 1px rgba(198, 161, 91, .25), 0 18px 50px -20px rgba(198, 161, 91, .25);
         }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -75,7 +83,9 @@
             color: var(--ivory);
         }
 
-        /* ===== ICONS ===== */
+        /* ============================================================
+           ICONS – SVG system
+           ============================================================ */
         .icon {
             width: 20px;
             height: 20px;
@@ -89,7 +99,9 @@
             flex-shrink: 0;
         }
 
-        /* ===== UTILITY ===== */
+        /* ============================================================
+           UTILITY CLASSES
+           ============================================================ */
         .container {
             max-width: 1180px;
             margin: 0 auto;
@@ -160,7 +172,9 @@
             transform: none !important;
         }
 
-        /* ===== HEADER ===== */
+        /* ============================================================
+           HEADER
+           ============================================================ */
         header {
             position: sticky;
             top: 0;
@@ -245,7 +259,9 @@
             }
         }
 
-        /* ===== HERO ===== */
+        /* ============================================================
+           HERO SECTION
+           ============================================================ */
         .hero {
             padding: 88px 0 60px;
             text-align: center;
@@ -296,7 +312,9 @@
             color: var(--gold);
         }
 
-        /* ===== PROBLEMS SECTION ===== */
+        /* ============================================================
+           PROBLEMS SECTION (CARDS)
+           ============================================================ */
         .problems {
             padding: 20px 0 90px;
         }
@@ -383,7 +401,9 @@
             color: var(--ivory-faint);
         }
 
-        /* ===== FOOTER ===== */
+        /* ============================================================
+           FOOTER
+           ============================================================ */
         footer {
             border-top: 1px solid rgba(198, 161, 91, .18);
             padding: 44px 0 34px;
@@ -422,7 +442,9 @@
             border-color: var(--gold);
         }
 
-        /* ===== PAGE SECTIONS ===== */
+        /* ============================================================
+           PAGE SECTIONS (Problem & Quiz)
+           ============================================================ */
         .page-section {
             padding: 56px 0 100px;
         }
@@ -453,7 +475,9 @@
             margin-bottom: 14px;
         }
 
-        /* ===== PROBLEM STATEMENT ===== */
+        /* ============================================================
+           PROBLEM STATEMENT
+           ============================================================ */
         .problem-statement {
             border: 1px solid rgba(198, 161, 91, .22);
             border-radius: var(--radius);
@@ -468,7 +492,9 @@
             color: var(--ivory);
         }
 
-        /* ===== STEPS ===== */
+        /* ============================================================
+           STEPS CARDS (for problem explanation)
+           ============================================================ */
         .steps-title {
             margin: 52px 0 26px;
             display: flex;
@@ -547,7 +573,9 @@
             font-weight: 700;
         }
 
-        /* ===== DATA TABLE ===== */
+        /* ============================================================
+           DATA TABLE (for problem 2)
+           ============================================================ */
         table.data-table {
             width: 100%;
             border-collapse: collapse;
@@ -610,7 +638,9 @@
             }
         }
 
-        /* ===== DECISION BOX ===== */
+        /* ============================================================
+           DECISION BOX (for problem 2)
+           ============================================================ */
         .decision-box {
             margin-top: 26px;
             border-radius: var(--radius);
@@ -630,7 +660,9 @@
             font-weight: 700;
         }
 
-        /* ===== QUIZ CTA ===== */
+        /* ============================================================
+           QUIZ CTA
+           ============================================================ */
         .quiz-cta {
             margin-top: 52px;
             display: flex;
@@ -641,7 +673,9 @@
             font-size: 1.05rem;
         }
 
-        /* ===== QUIZ ===== */
+        /* ============================================================
+           QUIZ HEADER & TOOLS
+           ============================================================ */
         .quiz-header {
             display: flex;
             flex-wrap: wrap;
@@ -694,6 +728,9 @@
             background: rgba(198, 161, 91, .06);
         }
 
+        /* ============================================================
+           QUIZ STATEMENT
+           ============================================================ */
         .quiz-statement {
             border: 1px solid rgba(198, 161, 91, .2);
             border-radius: var(--radius);
@@ -706,6 +743,9 @@
             white-space: pre-line;
         }
 
+        /* ============================================================
+           QUIZ STEP (individual step card)
+           ============================================================ */
         .qstep {
             border: 1px solid rgba(198, 161, 91, .16);
             border-radius: var(--radius);
@@ -762,15 +802,18 @@
             display: block;
         }
 
+        /* ============================================================
+           QUIZ INPUT FIELDS
+           ============================================================ */
         .field-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
         .field {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         .field label {
             font-size: .85rem;
@@ -832,7 +875,9 @@
             margin-top: 20px;
         }
 
-        /* ===== QUIZ TABLE ===== */
+        /* ============================================================
+           MINI TABLE (for quiz 2)
+           ============================================================ */
         .mini-table {
             width: 100%;
             border-collapse: collapse;
@@ -918,7 +963,9 @@
             }
         }
 
-        /* ===== DECISION CHOICE ===== */
+        /* ============================================================
+           DECISION CHOICE (for quiz 2)
+           ============================================================ */
         .decision-choice {
             display: flex;
             gap: 14px;
@@ -957,7 +1004,9 @@
             cursor: not-allowed;
         }
 
-        /* ===== RESULT SCREEN ===== */
+        /* ============================================================
+           RESULT SCREEN
+           ============================================================ */
         .result-screen {
             text-align: center;
             padding: 20px 0;
@@ -1035,7 +1084,9 @@
             flex-wrap: wrap;
         }
 
-        /* ===== CALCULATOR OVERLAY ===== */
+        /* ============================================================
+           CALCULATOR OVERLAY
+           ============================================================ */
         .calc-overlay {
             position: fixed;
             inset: 0;
@@ -1130,7 +1181,9 @@
             grid-column: span 2;
         }
 
-        /* ===== TOAST ===== */
+        /* ============================================================
+           TOAST NOTIFICATION
+           ============================================================ */
         .toast {
             position: fixed;
             bottom: 28px;
@@ -1155,7 +1208,9 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ===== REDUCED MOTION ===== */
+        /* ============================================================
+           REDUCED MOTION
+           ============================================================ */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -1164,9 +1219,12 @@
         }
     </style>
 </head>
+
 <body>
 
-    <!-- ===== SVG ICONS ===== -->
+    <!-- ============================================================
+    SVG ICONS – نظام الأيقونات الداخلي
+    ============================================================ -->
     <svg style="display:none" aria-hidden="true">
         <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9.5A1 1 0 0 0 6.5 20.5h11a1 1 0 0 0 1-1V10"/><path d="M9.5 20.5V14h5v6.5"/></symbol>
         <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></symbol>
@@ -1194,7 +1252,9 @@
         <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
     </svg>
 
-    <!-- ===== HEADER ===== -->
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
     <header>
         <div class="header-inner container">
             <div class="brand">
@@ -1217,7 +1277,9 @@
 
     <main class="container">
 
-        <!-- ===== HOME ===== -->
+        <!-- ============================================================
+        الصفحة الرئيسية
+        ============================================================ -->
         <section id="page-home" class="page">
             <div class="hero">
                 <div class="hero-eyebrow"><svg><use href="#i-book"/></svg></div>
@@ -1259,7 +1321,9 @@
             </div>
         </section>
 
-        <!-- ===== PROBLEM 1 ===== -->
+        <!-- ============================================================
+        المسألة الأولى – شرح
+        ============================================================ -->
         <section id="page-problem1" class="page hidden page-section">
             <a class="back-link" href="#" onclick="showPage('home');return false;"><svg class="icon"><use href="#i-arrow-r"/></svg> العودة إلى الرئيسية</a>
             <div class="problem-header">
@@ -1350,7 +1414,9 @@
             </div>
         </section>
 
-        <!-- ===== QUIZ 1 ===== -->
+        <!-- ============================================================
+        اختبار المسألة الأولى – 7 خطوات
+        ============================================================ -->
         <section id="page-quiz1" class="page hidden page-section">
             <a class="back-link" href="#" onclick="showPage('problem1');return false;"><svg class="icon"><use href="#i-arrow-r"/></svg> العودة إلى شرح المسألة</a>
             <div class="quiz-header">
@@ -1360,7 +1426,7 @@
                     <div class="quiz-score"><svg class="icon"><use href="#i-trophy"/></svg> الدرجة: <span id="q1-score">٠</span> / ٣٠</div>
                 </div>
             </div>
-            <p style="color:var(--ivory-faint);font-size:.85rem;margin-bottom:18px;">مسألة تدريبية جديدة بأرقام مختلفة، بنفس منهج الحل الموضح في الشرح.</p>
+            <p style="color:var(--ivory-faint);font-size:.85rem;margin-bottom:18px;">مسألة تدريبية جديدة بأرقام مختلفة، بنفس منهج الحل الموضح في الشرح. أكمل النتائج في كل خطوة.</p>
             <div class="quiz-statement" id="q1-statement"></div>
             <div id="q1-steps"></div>
             <div class="check-row">
@@ -1369,7 +1435,9 @@
             <div id="q1-result" class="hidden"></div>
         </section>
 
-        <!-- ===== PROBLEM 2 ===== -->
+        <!-- ============================================================
+        المسألة الثانية – شرح
+        ============================================================ -->
         <section id="page-problem2" class="page hidden page-section">
             <a class="back-link" href="#" onclick="showPage('home');return false;"><svg class="icon"><use href="#i-arrow-r"/></svg> العودة إلى الرئيسية</a>
             <div class="problem-header">
@@ -1420,7 +1488,9 @@
             </div>
         </section>
 
-        <!-- ===== QUIZ 2 ===== -->
+        <!-- ============================================================
+        اختبار المسألة الثانية – جدول تفاعلي
+        ============================================================ -->
         <section id="page-quiz2" class="page hidden page-section">
             <a class="back-link" href="#" onclick="showPage('problem2');return false;"><svg class="icon"><use href="#i-arrow-r"/></svg> العودة إلى شرح المسألة</a>
             <div class="quiz-header">
@@ -1449,7 +1519,9 @@
 
     </main>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
     <footer>
         <div class="container">
             <div class="footer-title">مرحبًا بك في المنصة التعليمية</div>
@@ -1464,7 +1536,9 @@
         </div>
     </footer>
 
-    <!-- ===== CALCULATOR OVERLAY ===== -->
+    <!-- ============================================================
+    نافذة الحاسبة
+    ============================================================ -->
     <div class="calc-overlay" id="calcOverlay">
         <div class="calculator">
             <div class="calc-head">
@@ -1479,19 +1553,30 @@
         </div>
     </div>
 
-    <!-- ===== TOAST ===== -->
+    <!-- ============================================================
+    TOAST
+    ============================================================ -->
     <div class="toast" id="toast"></div>
 
+    <!-- ============================================================
+    JAVASCRIPT – المنطق التفاعلي الكامل
+    ============================================================ -->
     <script>
-        // ============================================================
-        // NAVIGATION
-        // ============================================================
+        /**
+         * ============================================================
+         * 1. التنقل بين الصفحات
+         * ============================================================
+         */
         function showPage(pageId) {
+            // إخفاء جميع الصفحات
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            // إظهار الصفحة المطلوبة
             const target = document.getElementById('page-' + pageId);
             if (target) target.classList.remove('hidden');
+            // إغلاق القائمة في الموبايل
             document.getElementById('mainNav').classList.remove('open');
             document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
+            // التمرير للأعلى
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1502,12 +1587,18 @@
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         }
 
-        // ============================================================
-        // CALCULATOR
-        // ============================================================
-        function openCalculator() { document.getElementById('calcOverlay').classList.add('open'); }
+        /**
+         * ============================================================
+         * 2. الحاسبة
+         * ============================================================
+         */
+        function openCalculator() {
+            document.getElementById('calcOverlay').classList.add('open');
+        }
 
-        function closeCalculator() { document.getElementById('calcOverlay').classList.remove('open'); }
+        function closeCalculator() {
+            document.getElementById('calcOverlay').classList.remove('open');
+        }
 
         (function initCalc() {
             const grid = document.getElementById('calcGrid');
@@ -1530,7 +1621,9 @@
                     const result = new Function(`return (${sanitized})`)();
                     if (!isFinite(result)) return 'خطأ';
                     return String(Math.round(result * 1000) / 1000);
-                } catch { return 'خطأ'; }
+                } catch {
+                    return 'خطأ';
+                }
             }
 
             keys.forEach(k => {
@@ -1540,21 +1633,33 @@
                 if (['÷', '×', '-', '+'].includes(k)) btn.classList.add('op');
                 btn.textContent = k;
                 btn.setAttribute('aria-label', k === '⌫' ? 'حذف آخر رمز' : (k === 'C' ? 'مسح' : k));
-                btn.addEventListener('click', () => {
-                    if (k === 'C') { expr = '';
+                btn.addEventListener('click', function() {
+                    if (k === 'C') {
+                        expr = '';
                         display = '0';
-                        updateDisplay(); return; }
-                    if (k === '⌫') { expr = expr.slice(0, -1);
+                        updateDisplay();
+                        return;
+                    }
+                    if (k === '⌫') {
+                        expr = expr.slice(0, -1);
                         display = expr === '' ? '0' : expr;
-                        updateDisplay(); return; }
-                    if (k === '=') { const result = calculate(expr);
+                        updateDisplay();
+                        return;
+                    }
+                    if (k === '=') {
+                        const result = calculate(expr);
                         display = result;
                         expr = result === 'خطأ' ? '' : result;
-                        updateDisplay(); return; }
-                    if (k === '%') { if (display === '0') return;
+                        updateDisplay();
+                        return;
+                    }
+                    if (k === '%') {
+                        if (display === '0') return;
                         expr += '%';
                         display = expr;
-                        updateDisplay(); return; }
+                        updateDisplay();
+                        return;
+                    }
                     if (display === '0' && k !== '.') display = '';
                     display += k;
                     expr += k;
@@ -1565,12 +1670,18 @@
             updateDisplay();
         })();
 
-        // ============================================================
-        // UTILITY FUNCTIONS
-        // ============================================================
-        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        /**
+         * ============================================================
+         * 3. دوال مساعدة (أدوات)
+         * ============================================================
+         */
+        function pick(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
 
-        function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
         function fmt(n) {
             const num = Math.round(n * 100) / 100;
@@ -1607,9 +1718,11 @@
             t._hide = setTimeout(() => t.classList.remove('show'), duration);
         }
 
-        // ============================================================
-        // QUIZ 1 — DATA GENERATION
-        // ============================================================
+        /**
+         * ============================================================
+         * 4. اختبار المسألة الأولى – توليد البيانات و7 خطوات
+         * ============================================================
+         */
         function generateQuiz1Data() {
             const priceOptions = [20, 40, 60, 80, 100, 120];
             const cmOptions = [10, 15, 20, 25, 30, 35, 40, 45, 50];
@@ -1655,105 +1768,151 @@
         function startQuiz1() {
             showPage('quiz1');
             const data = generateQuiz1Data();
-            const iCM = randInt(0, 2),
-                iMix = randInt(0, 2),
-                iBE = randInt(0, 2);
-            quiz1State = {
-                data,
-                hintsUsed: new Set(),
-                questions: [
-                    { title: `نسبة هامش المساهمة للمنتج (${data.products[iCM].name})`,
-                        hint: 'القانون: (سعر البيع − التكلفة المتغيرة) ÷ سعر البيع',
-                        answer: data.products[iCM].cmPct, unit: '٪', points: 5, tolPct: 0.01, tolAbs: 0.3 },
-                    { title: 'إجمالي قيمة مبيعات المنشأة',
-                        hint: 'القانون: مجموع (كمية المبيعات × سعر البيع) لكل منتج',
-                        answer: data.totalSales, unit: 'ج', points: 5, tolPct: 0.005, tolAbs: 5 },
-                    { title: `نسبة التشكيل البيعي للمنتج (${data.products[iMix].name})`,
-                        hint: 'القانون: قيمة مبيعات المنتج ÷ إجمالي مبيعات المنشأة',
-                        answer: data.products[iMix].salesMix, unit: '٪', points: 5, tolPct: 0.01, tolAbs: 0.3 },
-                    { title: 'نسبة هامش المساهمة المرجحة للمنشأة',
-                        hint: 'القانون: مجموع (نسبة هامش كل منتج × نسبة تشكيله البيعي)',
-                        answer: data.weightedCM, unit: '٪', points: 5, tolPct: 0.01, tolAbs: 0.3 },
-                    { title: 'قيمة مبيعات التعادل الإجمالية للمنشأة',
-                        hint: 'القانون: إجمالي التكاليف الثابتة ÷ نسبة هامش المساهمة المرجحة',
-                        answer: data.breakevenTotal, unit: 'ج', points: 5, tolPct: 0.01, tolAbs: 5 },
-                    { title: `كمية التعادل للمنتج (${data.products[iBE].name})`,
-                        hint: 'القانون: (قيمة تعادل المنشأة × نسبة تشكيل المنتج) ÷ سعر بيع الوحدة',
-                        answer: data.products[iBE].breakevenUnits, unit: 'وحدة', points: 5, tolPct: 0.02, tolAbs: 2 }
-                ]
-            };
+
+            // نحدد 7 خطوات مطابقة لخطوات الحل
+            const steps = [{
+                title: 'نسبة هامش المساهمة للمنتج (أ)',
+                law: 'القانون: (سعر البيع - التكلفة المتغيرة) ÷ سعر البيع',
+                display: `(${fmt(data.products[0].price)} - ${fmt(data.products[0].vc)}) ÷ ${fmt(data.products[0].price)} = ?`,
+                answer: data.products[0].cmPct,
+                unit: '٪',
+                points: 4
+            }, {
+                title: 'نسبة هامش المساهمة للمنتج (ب)',
+                law: 'القانون: (سعر البيع - التكلفة المتغيرة) ÷ سعر البيع',
+                display: `(${fmt(data.products[1].price)} - ${fmt(data.products[1].vc)}) ÷ ${fmt(data.products[1].price)} = ?`,
+                answer: data.products[1].cmPct,
+                unit: '٪',
+                points: 4
+            }, {
+                title: 'نسبة هامش المساهمة للمنتج (ج)',
+                law: 'القانون: (سعر البيع - التكلفة المتغيرة) ÷ سعر البيع',
+                display: `(${fmt(data.products[2].price)} - ${fmt(data.products[2].vc)}) ÷ ${fmt(data.products[2].price)} = ?`,
+                answer: data.products[2].cmPct,
+                unit: '٪',
+                points: 4
+            }, {
+                title: 'إجمالي قيمة مبيعات المنشأة',
+                law: 'القانون: مجموع (كمية المبيعات × سعر البيع) لكل منتج',
+                display: `${fmt(data.products[0].salesValue)} + ${fmt(data.products[1].salesValue)} + ${fmt(data.products[2].salesValue)} = ?`,
+                answer: data.totalSales,
+                unit: 'ج',
+                points: 4
+            }, {
+                title: 'نسبة التشكيل البيعي للمنتج (أ)',
+                law: 'القانون: قيمة مبيعات المنتج ÷ إجمالي مبيعات المنشأة',
+                display: `${fmt(data.products[0].salesValue)} ÷ ${fmt(data.totalSales)} = ?`,
+                answer: data.products[0].salesMix,
+                unit: '٪',
+                points: 4
+            }, {
+                title: 'نسبة هامش المساهمة المرجحة للمنشأة',
+                law: 'القانون: مجموع (نسبة هامش كل منتج × نسبة تشكيله البيعي)',
+                display: `(${fmt(data.products[0].cmPct)}% × ${fmt(data.products[0].salesMix)}%) + ... = ?`,
+                answer: data.weightedCM,
+                unit: '٪',
+                points: 5
+            }, {
+                title: 'قيمة مبيعات التعادل الإجمالية للمنشأة',
+                law: 'القانون: إجمالي التكاليف الثابتة ÷ نسبة هامش المساهمة المرجحة',
+                display: `${fmt(data.totalFixed)} ÷ ${fmt(data.weightedCM)}% = ?`,
+                answer: data.breakevenTotal,
+                unit: 'ج',
+                points: 5
+            }];
+
+            // مجموع النقاط = 4*5 + 5*2 = 30
+            quiz1State = { data, steps, hintsUsed: new Set(), locked: false };
+
             renderQuiz1Statement(data);
+
             const container = document.getElementById('q1-steps');
             container.innerHTML = '';
-            quiz1State.questions.forEach((q, idx) => {
+
+            steps.forEach((step, idx) => {
                 const div = document.createElement('div');
                 div.className = 'qstep';
                 div.innerHTML = `
-              <div class="qstep-head">
-                <h4>سؤال ${idx+1}: ${q.title}</h4>
-                <button class="hint-btn" type="button" data-idx="${idx}" aria-label="إظهار تلميح">
-                  <svg class="icon"><use href="#i-bulb"/></svg> تلميح
-                </button>
-              </div>
-              <div class="hint-panel">${q.hint}</div>
-              <div class="field-row">
-                <div class="field" id="q1-field-${idx}">
-                  <label for="q1-input-${idx}">الإجابة (${q.unit}):</label>
-                  <div class="input-wrap">
-                    <input type="text" inputmode="decimal" id="q1-input-${idx}" placeholder="أدخل القيمة...">
-                  </div>
-                  <div class="field-feedback" id="q1-feedback-${idx}"></div>
-                </div>
-              </div>`;
+                    <div class="qstep-head">
+                        <h4>الخطوة ${idx+1}: ${step.title}</h4>
+                        <button class="hint-btn" type="button" data-idx="${idx}" aria-label="إظهار تلميح">
+                            <svg class="icon"><use href="#i-bulb"/></svg> تلميح
+                        </button>
+                    </div>
+                    <div class="hint-panel">${step.law}</div>
+                    <div class="field-row">
+                        <div class="field" id="q1-field-${idx}">
+                            <label for="q1-input-${idx}">التعويض:</label>
+                            <div style="color:var(--ivory-dim);font-size:.95rem;padding:6px 0;direction:rtl;">${step.display}</div>
+                            <div class="input-wrap">
+                                <input type="text" inputmode="decimal" id="q1-input-${idx}" placeholder="أدخل الناتج (${step.unit})...">
+                            </div>
+                            <div class="field-feedback" id="q1-feedback-${idx}"></div>
+                        </div>
+                    </div>
+                `;
                 container.appendChild(div);
             });
+
+            // ربط أزرار التلميح
             container.querySelectorAll('.hint-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    btn.nextElementSibling.classList.toggle('open');
-                    btn.classList.add('used');
-                    quiz1State.hintsUsed.add(btn.dataset.idx);
+                btn.addEventListener('click', function() {
+                    this.nextElementSibling.classList.toggle('open');
+                    this.classList.add('used');
+                    quiz1State.hintsUsed.add(this.dataset.idx);
                 });
             });
+
+            // إعادة تعيين حالة النتيجة
             document.getElementById('q1-result').classList.add('hidden');
             document.getElementById('q1-result').innerHTML = '';
             document.getElementById('q1-score').textContent = '٠';
             document.getElementById('q1-finish-btn').disabled = false;
+            quiz1State.locked = false;
         }
 
         function finishQuiz1() {
+            if (quiz1State.locked) return;
             let score = 0,
                 correctCount = 0,
                 wrongCount = 0;
-            quiz1State.questions.forEach((q, idx) => {
+
+            quiz1State.steps.forEach((step, idx) => {
                 const input = document.getElementById(`q1-input-${idx}`);
                 const field = document.getElementById(`q1-field-${idx}`);
                 const feedback = document.getElementById(`q1-feedback-${idx}`);
                 const userVal = parseAnswer(input.value);
-                const ok = closeEnough(userVal, q.answer, q.tolPct, q.tolAbs);
+                const ok = closeEnough(userVal, step.answer, 0.01, 0.5);
+
                 if (ok) {
-                    score += q.points;
+                    score += step.points;
                     correctCount++;
                     field.classList.add('correct');
                     field.classList.remove('incorrect');
                     feedback.className = 'field-feedback correct';
-                    feedback.innerHTML = `<svg><use href="#i-check"/></svg> إجابة صحيحة`;
+                    feedback.innerHTML = `<svg><use href="#i-check"/></svg> صحيح (${step.points} نقطة)`;
                 } else {
                     wrongCount++;
                     field.classList.add('incorrect');
                     field.classList.remove('correct');
                     feedback.className = 'field-feedback incorrect';
-                    feedback.innerHTML = `<svg><use href="#i-x"/></svg> الإجابة الصحيحة: ${fmt(q.answer)} ${q.unit}`;
+                    feedback.innerHTML = `<svg><use href="#i-x"/></svg> الإجابة الصحيحة: ${fmt(step.answer)} ${step.unit}`;
                 }
                 input.disabled = true;
             });
+
             document.getElementById('q1-score').textContent = score;
             document.getElementById('q1-finish-btn').disabled = true;
+            quiz1State.locked = true;
+
             showQuizResult('q1-result', score, 30, correctCount, wrongCount, quiz1State.hintsUsed.size, startQuiz1);
         }
 
-        // ============================================================
-        // QUIZ 2 — DATA GENERATION
-        // ============================================================
+        /**
+         * ============================================================
+         * 5. اختبار المسألة الثانية – توليد البيانات والجدول
+         * ============================================================
+         */
         function generateQuiz2Data() {
             const sellingPrice = pick([8, 10, 12, 15, 20]);
             const lampCost = pick([1, 1.5, 2, 2.5]);
@@ -1826,54 +1985,66 @@
         function startQuiz2() {
             showPage('quiz2');
             const data = generateQuiz2Data();
-            quiz2State = { data, hintUsed: false, decisionChoice: null };
+            quiz2State = { data, hintUsed: false, decisionChoice: null, locked: false };
 
             renderQuiz2Statement(data);
 
             const wrap = document.getElementById('q2-table-wrap');
-            let html =
-                `<table class="mini-table"><thead><tr>
-            <th style="min-width:100px;">بيان التكلفة</th>
-            <th style="min-width:90px;">الشراء (معطى)</th>
-            <th style="min-width:100px;">الصنع</th>
-            <th style="min-width:100px;">الفرق</th>
-          </tr></thead><tbody>`;
+            let html = `
+                <table class="mini-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width:100px;">بيان التكلفة</th>
+                            <th style="min-width:90px;">الشراء (معطى)</th>
+                            <th style="min-width:100px;">الصنع</th>
+                            <th style="min-width:100px;">الفرق</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
             data.rows.forEach((row, idx) => {
-                html += `<tr>
-              <td class="row-label">${row.label}</td>
-              <td class="given-val">${fmt(row.buy)}</td>
-              <td><input type="text" inputmode="decimal" id="q2-make-${idx}" placeholder="..."></td>
-              <td><input type="text" inputmode="decimal" id="q2-diff-${idx}" placeholder="..."></td>
-            </tr>`;
+                html += `
+                    <tr>
+                        <td class="row-label">${row.label}</td>
+                        <td class="given-val">${fmt(row.buy)}</td>
+                        <td><input type="text" inputmode="decimal" id="q2-make-${idx}" placeholder="..."></td>
+                        <td><input type="text" inputmode="decimal" id="q2-diff-${idx}" placeholder="..."></td>
+                    </tr>
+                `;
             });
-            html += `<tr>
-              <td class="row-label"><strong>الإجمالي</strong></td>
-              <td class="given-val"><strong>${fmt(data.totalBuy)}</strong></td>
-              <td><input type="text" inputmode="decimal" id="q2-make-total" placeholder="..."></td>
-              <td><input type="text" inputmode="decimal" id="q2-diff-total" placeholder="..."></td>
-            </tr>`;
-            html += `</tbody></table>`;
+            html += `
+                    <tr>
+                        <td class="row-label"><strong>الإجمالي</strong></td>
+                        <td class="given-val"><strong>${fmt(data.totalBuy)}</strong></td>
+                        <td><input type="text" inputmode="decimal" id="q2-make-total" placeholder="..."></td>
+                        <td><input type="text" inputmode="decimal" id="q2-diff-total" placeholder="..."></td>
+                    </tr>
+                </tbody></table>
+            `;
             wrap.innerHTML = html;
 
+            // قسم القرار
             const decisionDiv = document.getElementById('q2-decision');
             decisionDiv.innerHTML = `
-            <div class="qstep">
-              <div class="qstep-head"><h4>القرار: هل يُنصح بالصنع أم الشراء؟</h4></div>
-              <div class="decision-choice">
-                <button class="choice-btn" type="button" id="q2-choice-صنع">الصنع</button>
-                <button class="choice-btn" type="button" id="q2-choice-شراء">الشراء</button>
-              </div>
-              <div class="field-feedback" id="q2-decision-feedback" style="margin-top:10px"></div>
-            </div>`;
+                <div class="qstep">
+                    <div class="qstep-head"><h4>القرار: هل يُنصح بالصنع أم الشراء؟</h4></div>
+                    <div class="decision-choice">
+                        <button class="choice-btn" type="button" id="q2-choice-صنع">الصنع</button>
+                        <button class="choice-btn" type="button" id="q2-choice-شراء">الشراء</button>
+                    </div>
+                    <div class="field-feedback" id="q2-decision-feedback" style="margin-top:10px"></div>
+                </div>
+            `;
             document.getElementById('q2-choice-صنع').addEventListener('click', () => selectQ2Choice('صنع'));
             document.getElementById('q2-choice-شراء').addEventListener('click', () => selectQ2Choice('شراء'));
 
+            // تلميح الجدول
             document.getElementById('q2-hint-panel').classList.remove('open');
             document.getElementById('q2-hint-btn').classList.remove('used');
             const hintBtn = document.getElementById('q2-hint-btn');
-            hintBtn.onclick = () => {
+            hintBtn.onclick = function() {
                 document.getElementById('q2-hint-panel').classList.toggle('open');
-                hintBtn.classList.add('used');
+                this.classList.add('used');
                 quiz2State.hintUsed = true;
             };
 
@@ -1881,6 +2052,7 @@
             document.getElementById('q2-result').innerHTML = '';
             document.getElementById('q2-score').textContent = '٠';
             document.getElementById('q2-finish-btn').disabled = false;
+            quiz2State.locked = false;
         }
 
         function selectQ2Choice(choice) {
@@ -1893,10 +2065,13 @@
         }
 
         function finishQuiz2() {
+            if (quiz2State.locked) return;
             const d = quiz2State.data;
             let score = 0,
                 correctCount = 0,
                 wrongCount = 0;
+
+            // تصحيح كل بند
             d.rows.forEach((row, idx) => {
                 const makeInput = document.getElementById(`q2-make-${idx}`);
                 const diffInput = document.getElementById(`q2-diff-${idx}`);
@@ -1904,6 +2079,7 @@
                 const diffVal = parseAnswer(diffInput.value);
                 const makeOk = closeEnough(makeVal, row.make, 0.01, 3);
                 const diffOk = closeEnough(diffVal, row.diff, 0.02, 3);
+
                 if (makeOk) { score += 2;
                     correctCount++;
                     makeInput.classList.add('correct'); } else { wrongCount++;
@@ -1912,6 +2088,7 @@
                     correctCount++;
                     diffInput.classList.add('correct'); } else { wrongCount++;
                     diffInput.classList.add('incorrect'); }
+
                 const fb = document.createElement('div');
                 fb.className = 'mini-fb ' + ((makeOk && diffOk) ? 'correct' : 'incorrect');
                 fb.textContent = (makeOk && diffOk) ? 'صحيح' : `الصحيح: صنع ${fmt(row.make)} / فرق ${fmt(row.diff)}`;
@@ -1920,12 +2097,14 @@
                 diffInput.disabled = true;
             });
 
+            // الإجمالي
             const makeTotalInput = document.getElementById('q2-make-total');
             const diffTotalInput = document.getElementById('q2-diff-total');
             const makeTotalVal = parseAnswer(makeTotalInput.value);
             const diffTotalVal = parseAnswer(diffTotalInput.value);
             const makeTotalOk = closeEnough(makeTotalVal, d.totalMake, 0.01, 5);
             const diffTotalOk = closeEnough(diffTotalVal, d.totalDiff, 0.02, 5);
+
             if (makeTotalOk) { score += 1;
                 correctCount++;
                 makeTotalInput.classList.add('correct'); } else { wrongCount++;
@@ -1937,6 +2116,7 @@
             makeTotalInput.disabled = true;
             diffTotalInput.disabled = true;
 
+            // القرار
             const correctChoice = d.netSaving > 0 ? 'صنع' : 'شراء';
             const decisionFeedback = document.getElementById('q2-decision-feedback');
             const choiceOk = quiz2State.decisionChoice === correctChoice;
@@ -1948,6 +2128,7 @@
                     else if (c === quiz2State.decisionChoice) btn.classList.add('incorrect');
                 }
             });
+
             if (choiceOk) {
                 score += 4;
                 correctCount++;
@@ -1959,47 +2140,56 @@
                 decisionFeedback.className = 'field-feedback incorrect';
                 decisionFeedback.innerHTML = `<svg><use href="#i-x"/></svg> القرار الصحيح: ${correctChoice}`;
             }
-            quiz2State.locked = true;
 
+            quiz2State.locked = true;
             document.getElementById('q2-score').textContent = score;
             document.getElementById('q2-finish-btn').disabled = true;
+
             showQuizResult('q2-result', score, 30, correctCount, wrongCount, quiz2State.hintUsed ? 1 : 0, startQuiz2);
         }
 
-        // ============================================================
-        // RESULT SCREEN
-        // ============================================================
+        /**
+         * ============================================================
+         * 6. شاشة النتيجة الموحدة
+         * ============================================================
+         */
         function showQuizResult(resultId, score, total, correctCount, wrongCount, hintsCount, retryFn) {
             const container = document.getElementById(resultId);
             const percent = Math.round((score / total) * 100);
             let level = 'ممتاز';
             if (percent < 60) level = 'يحتاج مراجعة';
             else if (percent < 80) level = 'جيد';
+
             container.className = 'result-screen';
             container.innerHTML = `
-            <div class="result-icon"><svg><use href="#i-trophy"/></svg></div>
-            <h2>النتيجة النهائية</h2>
-            <div class="result-score">${score}</div>
-            <div class="result-percent">من ${total} نقطة</div>
-            <div class="result-level">${level} (${percent}٪)</div>
-            <div class="result-summary">
-              <div class="result-stat"><div class="num">${correctCount}</div><div class="lbl">إجابات صحيحة</div></div>
-              <div class="result-stat"><div class="num">${wrongCount}</div><div class="lbl">إجابات خاطئة</div></div>
-              <div class="result-stat"><div class="num">${hintsCount}</div><div class="lbl">تلميحات مستخدمة</div></div>
-            </div>
-            <div class="result-actions">
-              <button class="btn btn-primary" id="${resultId}-retry"><svg class="icon"><use href="#i-rotate"/></svg> إعادة المسألة</button>
-              <button class="btn btn-outline" id="${resultId}-exit"><svg class="icon"><use href="#i-exit"/></svg> الخروج</button>
-            </div>`;
+                <div class="result-icon"><svg><use href="#i-trophy"/></svg></div>
+                <h2>النتيجة النهائية</h2>
+                <div class="result-score">${score}</div>
+                <div class="result-percent">من ${total} نقطة</div>
+                <div class="result-level">${level} (${percent}٪)</div>
+                <div class="result-summary">
+                    <div class="result-stat"><div class="num">${correctCount}</div><div class="lbl">إجابات صحيحة</div></div>
+                    <div class="result-stat"><div class="num">${wrongCount}</div><div class="lbl">إجابات خاطئة</div></div>
+                    <div class="result-stat"><div class="num">${hintsCount}</div><div class="lbl">تلميحات مستخدمة</div></div>
+                </div>
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="${resultId}-retry"><svg class="icon"><use href="#i-rotate"/></svg> إعادة المسألة</button>
+                    <button class="btn btn-outline" id="${resultId}-exit"><svg class="icon"><use href="#i-exit"/></svg> الخروج</button>
+                </div>
+            `;
+
             container.classList.remove('hidden');
             document.getElementById(`${resultId}-retry`).addEventListener('click', retryFn);
             document.getElementById(`${resultId}-exit`).addEventListener('click', () => showPage('home'));
+
             setTimeout(() => container.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
         }
 
-        // ============================================================
-        // INIT — show home
-        // ============================================================
+        /**
+         * ============================================================
+         * 7. تشغيل الصفحة الرئيسية عند التحميل
+         * ============================================================
+         */
         showPage('home');
     </script>
 </body>
